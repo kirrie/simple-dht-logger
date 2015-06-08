@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8">
+		<title>Temperature & Humidity</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link rel="stylesheet" href="/style.css" media="screen">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="/js/highcharts.js"></script>
+		<script>
+			/**
+			 * Dark theme for Highcharts JS
+			 * @author Torstein Honsi
+			 */
+
+			// Load the fonts
+			Highcharts.createElement('link', {
+			   href: '//fonts.googleapis.com/css?family=Roboto',
+			   rel: 'stylesheet',
+			   type: 'text/css'
+			}, null, document.getElementsByTagName('head')[0]);
+
+			Highcharts.theme = {
+			   colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
+				  "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
+			   chart: {
+				  backgroundColor: {
+					 linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+					 stops: [
+						[0, '#2a2a2b'],
+						[1, '#3e3e40']
+					 ]
+				  },
+				  style: {
+					 fontFamily: "'Roboto', sans-serif"
+				  },
+				  plotBorderColor: '#606063'
+			   },
+			   title: {
+				  style: {
+					 color: '#E0E0E3',
+					 textTransform: 'uppercase',
+					 fontSize: '20px'
+				  }
+			   },
+			   subtitle: {
+				  style: {
+					 color: '#E0E0E3',
+					 textTransform: 'uppercase'
+				  }
+			   },
+			   xAxis: {
+				  gridLineColor: '#707073',
+				  labels: {
+					 style: {
+						color: '#E0E0E3'
+					 }
+				  },
+				  lineColor: '#707073',
+				  minorGridLineColor: '#505053',
+				  tickColor: '#707073',
+				  title: {
+					 style: {
+						color: '#A0A0A3'
+
+					 }
+				  }
+			   },
+			   yAxis: {
+				  gridLineColor: '#707073',
+				  labels: {
+					 style: {
+						color: '#E0E0E3'
+					 }
+				  },
+				  lineColor: '#707073',
+				  minorGridLineColor: '#505053',
+				  tickColor: '#707073',
+				  tickWidth: 1,
+				  title: {
+					 style: {
+						color: '#A0A0A3'
+					 }
+				  }
+			   },
+			   tooltip: {
+				  backgroundColor: 'rgba(0, 0, 0, 0.85)',
+				  style: {
+					 color: '#F0F0F0'
+				  }
+			   },
+			   plotOptions: {
+				  series: {
+					 dataLabels: {
+						color: '#B0B0B3'
+					 },
+					 marker: {
+						lineColor: '#333'
+					 }
+				  },
+				  boxplot: {
+					 fillColor: '#505053'
+				  },
+				  candlestick: {
+					 lineColor: 'white'
+				  },
+				  errorbar: {
+					 color: 'white'
+				  }
+			   },
+			   legend: {
+				  itemStyle: {
+					 color: '#E0E0E3'
+				  },
+				  itemHoverStyle: {
+					 color: '#FFF'
+				  },
+				  itemHiddenStyle: {
+					 color: '#606063'
+				  }
+			   },
+			   credits: {
+				  style: {
+					 color: '#666'
+				  }
+			   },
+			   labels: {
+				  style: {
+					 color: '#707073'
+				  }
+			   },
+
+			   drilldown: {
+				  activeAxisLabelStyle: {
+					 color: '#F0F0F3'
+				  },
+				  activeDataLabelStyle: {
+					 color: '#F0F0F3'
+				  }
+			   },
+
+			   navigation: {
+				  buttonOptions: {
+					 symbolStroke: '#DDDDDD',
+					 theme: {
+						fill: '#505053'
+					 }
+				  }
+			   },
+
+			   // scroll charts
+			   rangeSelector: {
+				  buttonTheme: {
+					 fill: '#505053',
+					 stroke: '#000000',
+					 style: {
+						color: '#CCC'
+					 },
+					 states: {
+						hover: {
+						   fill: '#707073',
+						   stroke: '#000000',
+						   style: {
+							  color: 'white'
+						   }
+						},
+						select: {
+						   fill: '#000003',
+						   stroke: '#000000',
+						   style: {
+							  color: 'white'
+						   }
+						}
+					 }
+				  },
+				  inputBoxBorderColor: '#505053',
+				  inputStyle: {
+					 backgroundColor: '#333',
+					 color: 'silver'
+				  },
+				  labelStyle: {
+					 color: 'silver'
+				  }
+			   },
+
+			   navigator: {
+				  handles: {
+					 backgroundColor: '#666',
+					 borderColor: '#AAA'
+				  },
+				  outlineColor: '#CCC',
+				  maskFill: 'rgba(255,255,255,0.1)',
+				  series: {
+					 color: '#7798BF',
+					 lineColor: '#A6C7ED'
+				  },
+				  xAxis: {
+					 gridLineColor: '#505053'
+				  }
+			   },
+
+			   scrollbar: {
+				  barBackgroundColor: '#808083',
+				  barBorderColor: '#808083',
+				  buttonArrowColor: '#CCC',
+				  buttonBackgroundColor: '#606063',
+				  buttonBorderColor: '#606063',
+				  rifleColor: '#FFF',
+				  trackBackgroundColor: '#404043',
+				  trackBorderColor: '#404043'
+			   },
+
+			   // special colors for some of the
+			   legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+			   background2: '#505053',
+			   dataLabelsColor: '#B0B0B3',
+			   textColor: '#C0C0C0',
+			   contrastTextColor: '#F0F0F3',
+			   maskColor: 'rgba(255,255,255,0.3)'
+			};
+
+			// Apply the theme
+			Highcharts.setOptions(Highcharts.theme);
+
+			var getQueryVariable = function(variable) {
+			       var query = window.location.search.substring(1);
+			       var vars = query.split('&');
+
+			       for(var i = 0; i < vars.length; i++) {
+						var pair = vars[i].split("=");
+						if(pair[0] === variable) {
+							return pair[1];
+						}
+			       }
+
+			       return null;
+			};
+
+			$(document).ready(function() {
+				$.getJSON('/dht/date', {
+					year: getQueryVariable('year'),
+					month: getQueryVariable('month'),
+					date_of_month: getQueryVariable('date_of_month')
+				}, function(response) {
+					var labels = [], temperatures = [], humidities = [];
+
+					if(response && !response.error) {
+						$.each(response.result, function(i, item) {
+							labels.push(item.time);
+							temperatures.push(item.temperature);
+							humidities.push(item.humidity);
+						});
+
+						$('div#daily-ht').highcharts({
+					        title: {
+					            text: 'Daily temperature & humidity',
+					        },
+							chart: {
+								zoomType: 'xy'
+							},
+							xAxis: [{
+								categories: labels,
+								crosshair: true
+							}],
+							yAxis: [{
+								labels: {
+									format: '{value}°C',
+									style: {
+										color: Highcharts.getOptions().colors[1]
+									}
+								},
+								title: {
+									text: 'Temperature',
+									style: {
+										color: Highcharts.getOptions().colors[1]
+									}
+								}
+							}, {
+								labels: {
+									format: '{value}%',
+									style: {
+										color: Highcharts.getOptions().colors[0]
+									}
+								},
+								title: {
+									text: 'Humidity',
+									style: {
+										color: Highcharts.getOptions().colors[0]
+									}
+								},
+								opposite: true
+							}],
+							tooltip: {
+								shared: true
+							},
+							legend: {
+								layout: 'vertical',
+								align: 'left',
+								x: 70,
+								verticalAlign: 'top',
+								y: 10,
+								floating: true,
+								backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+							},
+							series: [{
+								name: 'Humidity',
+								type: 'spline',
+								yAxis: 1,
+								data: humidities,
+								tooltip: {
+									valueSuffix: '%'
+								}
+							}, {
+								name: 'Temperature',
+								type: 'spline',
+								data: temperatures,
+								tooltip: {
+									valueSuffix: '°C'
+								}
+							}]
+						});
+					} else {
+						alert('Error loading dht data.');
+					}
+				});
+
+                $.getJSON('/dht/date_average', function(response) {
+                    var labels = [], temperatures = [], humidities = [];
+
+                    if(response && !response.error) {
+                        $.each(response.result, function(i, item) {
+                            labels.push(item.date_of_month);
+                            temperatures.push(item.temperature);
+                            humidities.push(item.humidity);
+                        });
+
+                        $('div#date_of_month-ht-average').highcharts({
+                            title: {
+                                text: 'Date of month temperature & humidity average',
+                            },
+                            chart: {
+                                zoomType: 'xy'
+                            },
+                            xAxis: [{
+                                categories: labels,
+                                crosshair: true
+                            }],
+                            yAxis: [{
+                                labels: {
+                                    format: '{value}°C',
+                                    style: {
+                                        color: Highcharts.getOptions().colors[1]
+                                    }
+                                },
+                                title: {
+                                    text: 'Temperature',
+                                    style: {
+                                        color: Highcharts.getOptions().colors[1]
+                                    }
+                                }
+                            }, {
+                                labels: {
+                                    format: '{value}%',
+                                    style: {
+                                        color: Highcharts.getOptions().colors[0]
+                                    }
+                                },
+                                title: {
+                                    text: 'Humidity',
+                                    style: {
+                                        color: Highcharts.getOptions().colors[0]
+                                    }
+                                },
+                                opposite: true
+                            }],
+                            tooltip: {
+                                shared: true
+                            },
+                            legend: {
+                                layout: 'vertical',
+                                align: 'left',
+                                x: 70,
+                                verticalAlign: 'top',
+                                y: 10,
+                                floating: true,
+                                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+                            },
+                            series: [{
+                                name: 'Humidity',
+                                type: 'spline',
+                                yAxis: 1,
+                                data: humidities,
+                                tooltip: {
+                                    valueSuffix: '%'
+                                }
+                            }, {
+                                name: 'Temperature',
+                                type: 'spline',
+                                data: temperatures,
+                                tooltip: {
+                                    valueSuffix: '°C'
+                                }
+                            }]
+                        });
+                    } else {
+                        alert('Error loading dht data.');
+                    }
+                });
+
+
+				$.getJSON('/dht/hour_average', function(response) {
+					var labels = [], temperatures = [], humidities = [];
+
+					if(response && !response.error) {
+						$.each(response.result, function(i, item) {
+							labels.push(item.hour);
+							temperatures.push(item.temperature);
+							humidities.push(item.humidity);
+						});
+
+						$('div#hourly-ht-average').highcharts({
+					        title: {
+					            text: 'Hourly temperature & humidity average',
+					        },
+							chart: {
+								zoomType: 'xy'
+							},
+							xAxis: [{
+								categories: labels,
+								crosshair: true
+							}],
+							yAxis: [{
+								labels: {
+									format: '{value}°C',
+									style: {
+										color: Highcharts.getOptions().colors[1]
+									}
+								},
+								title: {
+									text: 'Temperature',
+									style: {
+										color: Highcharts.getOptions().colors[1]
+									}
+								}
+							}, {
+								labels: {
+									format: '{value}%',
+									style: {
+										color: Highcharts.getOptions().colors[0]
+									}
+								},
+								title: {
+									text: 'Humidity',
+									style: {
+										color: Highcharts.getOptions().colors[0]
+									}
+								},
+								opposite: true
+							}],
+							tooltip: {
+								shared: true
+							},
+							legend: {
+								layout: 'vertical',
+								align: 'left',
+								x: 70,
+								verticalAlign: 'top',
+								y: 10,
+								floating: true,
+								backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+							},
+							series: [{
+								name: 'Humidity',
+								type: 'spline',
+								yAxis: 1,
+								data: humidities,
+								tooltip: {
+									valueSuffix: '%'
+								}
+							}, {
+								name: 'Temperature',
+								type: 'spline',
+								data: temperatures,
+								tooltip: {
+									valueSuffix: '°C'
+								}
+							}]
+						});
+					} else {
+						alert('Error loading dht data.');
+					}
+				});
+			});
+		</script>
+		<style>
+		body {
+			background-color: #2a2a2b;
+		}
+
+		div.chart-area {
+			height: 400px;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12" id="daily-ht" class="chart-area"></div>
+			</div>
+            <div class="row">
+                <div class="col-md-12" id="date_of_month-ht-average" class="chart-area"></div>
+            </div>
+			<div class="row">
+				<div class="col-md-12" id="hourly-ht-average" class="chart-area"></div>
+			</div>
+		</div>
+	</body>
+</html>

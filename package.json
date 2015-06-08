@@ -1,0 +1,13 @@
+{
+	"name": "simple-dht-logger",
+	"version": "0.0.1",
+	"description": "dht logger using node.js, raspberry, arduino",
+	"private": true,
+	"dependencies": {
+		"serialport": "*",
+		"mysql": "*",
+		"moment": "*",
+		"express": "*"
+	},
+	"author": "juheon lee <jh.lee@catenoid.net>"
+}
