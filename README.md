@@ -1,5 +1,6 @@
 # Simple DHT Logger
 node.js와 Raspberry, Arduino를 이용한 온습도 센서 로깅 및 HTML 그래프 페이지.
+([English](https://github.com/kirrie/simple-dht-logger/blob/master/README.en.md))
 
 # 필요한 것들
 * 하드웨어
